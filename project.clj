@@ -7,6 +7,7 @@
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [org.clojure/clojurescript "1.7.145"]
                  [org.omcljs/om "1.0.0-alpha25-SNAPSHOT"]
+                 [cljs-http "0.1.38"]
 
                  [bidi "1.21.1"]
                  [com.cognitect/transit-clj "0.8.285"]

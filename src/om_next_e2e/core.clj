@@ -1,5 +1,6 @@
 (ns om-next-e2e.core
   (:require
+    [ring.middleware.resource :refer [wrap-resource]]
     [om-next-e2e.handlers :as handlers]
     [bidi.ring :refer [make-handler]]
     [cognitect.transit :as transit]
@@ -43,7 +44,7 @@
                   "query" {:post :query}
                   true :not-found}])
 
-(def app (make-handler routes req-handlers))
+(def app (wrap-resource (make-handler routes req-handlers) "public"))
 
 (defn -main []
   (let [host "localhost"
