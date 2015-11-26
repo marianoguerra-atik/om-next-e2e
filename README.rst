@@ -19,6 +19,10 @@ Basic Logging and HTTP Server
 * `Add the dependencied <https://github.com/marianoguerra-atik/om-next-e2e/commit/32842e95abc4960b32488a51110fe7d7e385be88#diff-0fff143854a4f5c0469a3819b978a483R9>`_
 * `Expose basic API <https://github.com/marianoguerra-atik/om-next-e2e/commit/32842e95abc4960b32488a51110fe7d7e385be88#diff-07922f5b56cc381777c62c1d0016830eR1>`_
 
+Jump to this commit with::
+
+    git checkout 32842e95abc4960b32488a51110fe7d7e385be88
+
 To test run::
 
     lein run
@@ -53,6 +57,10 @@ Basic Routing with Bidi
 
 This handlers (action and query) just return 200 and the body with some extra
 content.
+
+Jump to this commit with::
+
+    git checkout 03b95c397b1c7d21cafe7a9a21efebc7df5b6b41
 
 Let's try it, first let's try the not found handler::
 
@@ -96,6 +104,10 @@ Use Transit for Requests and Responses
 * `Add the transit dependency <https://github.com/marianoguerra-atik/om-next-e2e/commit/56d8d2e615e7f499c9dbeaa1d1479a0f39dc1950#diff-0fff143854a4f5c0469a3819b978a483R10>`_
 * `Deserialize transit on the way in and serialize it on the way out <https://github.com/marianoguerra-atik/om-next-e2e/commit/56d8d2e615e7f499c9dbeaa1d1479a0f39dc1950#diff-07922f5b56cc381777c62c1d0016830eR4>`_
 
+Jump to this commit with::
+
+    git checkout 56d8d2e615e7f499c9dbeaa1d1479a0f39dc1950
+
 From here on I will use a tool I created called `transito
 <https://pypi.python.org/pypi/transito>`_ written in python since writing and
 reading transit is not fun I created a tool to translate to and from json,
@@ -121,6 +133,8 @@ The response is translated from transit to edn, the actual response can be seen
 using something like curl::
 
     curl -X POST http://localhost:8080/action -d '["~#list",["~$start",["^ ","~:id","id2"]]]'
+
+    ["^ ","~:action",["~#list",["~$start",["^ ","~:id","id2"]]]]
 
 You can get the body you want translated to transit like this::
 
@@ -166,8 +180,8 @@ Then:
 * `Create the om parser <https://github.com/marianoguerra-atik/om-next-e2e/commit/f9ac70c18c89ecbe336c736ef266c17ee1ef8eab#diff-d527e7a759eae73907536b425c95666eR13>`_
 * `Implement readers <https://github.com/marianoguerra-atik/om-next-e2e/commit/f9ac70c18c89ecbe336c736ef266c17ee1ef8eab#diff-d527e7a759eae73907536b425c95666eR41>`_
 
-   + :count will return the current count
-   + :default will return :not-found
+  + :count will return the current count
+  + :default will return :not-found
 
 * `Implement mutators <https://github.com/marianoguerra-atik/om-next-e2e/commit/f9ac70c18c89ecbe336c736ef266c17ee1ef8eab#diff-d527e7a759eae73907536b425c95666eR47>`_
 
@@ -176,6 +190,10 @@ Then:
 
 * `Change the action handler to use the mutators <https://github.com/marianoguerra-atik/om-next-e2e/commit/f9ac70c18c89ecbe336c736ef266c17ee1ef8eab#diff-d527e7a759eae73907536b425c95666eR16>`_ 
 * `Change the query handler to use the readers <https://github.com/marianoguerra-atik/om-next-e2e/commit/f9ac70c18c89ecbe336c736ef266c17ee1ef8eab#diff-d527e7a759eae73907536b425c95666eR25>`_
+
+Jump to this commit with::
+
+    git checkout f9ac70c18c89ecbe336c736ef266c17ee1ef8eab
 
 Now let's test it.
 
