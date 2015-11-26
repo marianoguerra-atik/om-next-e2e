@@ -44,7 +44,7 @@
 (defmethod readf :count [env key _]
   (get-state-key env key))
 
-(defmethod mutatef 'increment [{:keys [state]} _ {:keys [value]}]
+(defmethod mutatef 'ui/increment [{:keys [state]} _ {:keys [value]}]
   (swap! state
          #(update % :count (fn [old] (+ old value))))
   {:status 200
