@@ -7,5 +7,6 @@
   :dependencies [[org.clojure/clojure "1.7.0"]
 
                  [bidi "1.21.1"]
+                 [com.cognitect/transit-clj "0.8.285"]
                  [org.clojure/tools.logging "0.3.1"]
                  [org.immutant/web "2.1.1"]])
