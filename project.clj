@@ -6,5 +6,6 @@
   :main om-next-e2e.core
   :dependencies [[org.clojure/clojure "1.7.0"]
 
+                 [bidi "1.21.1"]
                  [org.clojure/tools.logging "0.3.1"]
                  [org.immutant/web "2.1.1"]])
