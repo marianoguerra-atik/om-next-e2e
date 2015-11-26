@@ -1,5 +1,6 @@
 (ns om-next-e2e.core
   (:require
+    [om-next-e2e.handlers :as handlers]
     [bidi.ring :refer [make-handler]]
     [cognitect.transit :as transit]
     [clojure.tools.logging :as log]
@@ -16,15 +17,6 @@
 (defn parse-transit [data]
   (let [reader (transit/reader data :json)]
     (transit/read reader)))
-
-(defn handle-action [{:keys [body]}]
-  {:status 200 :body {:action body}})
-
-(defn handle-query [{:keys [body]}]
-  {:status 200 :body {:query body}})
-
-(defn handle-not-found [_]
-  {:status 404 :body {:error "Not Found"}})
 
 (defn response-to-transit [{:keys [body headers] :as response}]
   (assoc response
@@ -43,9 +35,9 @@
   (fn [{:keys [body]}]
     (response-to-transit (call-handler handler has-body body))))
 
-(def req-handlers {:action      (wrap-handler handle-action true)
-                   :query       (wrap-handler handle-query true)
-                   :not-found   (wrap-handler handle-not-found false)})
+(def req-handlers {:action      (wrap-handler handlers/action true)
+                   :query       (wrap-handler handlers/query true)
+                   :not-found   (wrap-handler handlers/not-found false)})
 
 (def routes ["/" {"action" {:post :action}
                   "query" {:post :query}
