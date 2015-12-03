@@ -340,7 +340,7 @@ it to work since I was trying to pass ":remote true" to the mutator but not
 the query ast, you will see that in the next commit.
 
 Then when Increment is clicked I make a transaction to increment it both locally
-and send it to the backend, I `make the transaction on click <https://github.com/marianoguerra-atik/om-next-e2e/commit/183449b05aacbf5986754a779e08fc1a03bc0fa6#diff-26cfe990c6692f961dbe8aa13b7a0a2dR60>`_ which is handled at `defmethod mutate 'ui/increment <https://github.com/marianoguerra-atik/om-next-e2e/commit/183449b05aacbf5986754a779e08fc1a03bc0fa6#diff-26cfe990c6692f961dbe8aa13b7a0a2dR34>`_, notice the ":remote true" and ":api ast", :api is an identifier for
+and send it to the backend, I `make the transaction on click <https://github.com/marianoguerra-atik/om-next-e2e/commit/183449b05aacbf5986754a779e08fc1a03bc0fa6#diff-26cfe990c6692f961dbe8aa13b7a0a2dR60>`_ which is handled at `defmethod mutate ui/increment <https://github.com/marianoguerra-atik/om-next-e2e/commit/183449b05aacbf5986754a779e08fc1a03bc0fa6#diff-26cfe990c6692f961dbe8aa13b7a0a2dR34>`_, notice the ":remote true" and ":api ast", :api is an identifier for
 a remote that I `specified when creating the reconciler <https://github.com/marianoguerra-atik/om-next-e2e/blob/183449b05aacbf5986754a779e08fc1a03bc0fa6/src/om_next_e2e/ui.cljs#L41>`_.
 
 Now you can start the server with::
