@@ -263,6 +263,98 @@ Try an inexistent action to try the :default handler::
 
     {:params {:value 1}, :key somethingelse, :error "Not Found"}
 
+Frontend and Backend Simplification
+-----------------------------------
+
+In the previous section I created one endpoint for queries and one for
+actions (or transactions), this was a confusion I had and is not needed,
+the om parser will call mutators or readers depending on what is passed,
+let's review the changes needed in the backend to make this a single endpoint:
+
+* `remove the action endpoint from bidi <https://github.com/marianoguerra-atik/om-next-e2e/commit/183449b05aacbf5986754a779e08fc1a03bc0fa6#diff-07922f5b56cc381777c62c1d0016830eL43>`_
+* `remove the action function in handlers module <https://github.com/marianoguerra-atik/om-next-e2e/commit/183449b05aacbf5986754a779e08fc1a03bc0fa6#diff-d527e7a759eae73907536b425c95666eL15>`_
+
+If we run this changes and try the increment mutation like before but sending
+it to the query endpoint we will get an error::
+
+    $ echo '(ui/increment {:value 1})' | transito http post http://localhost:8080/query e2t -
+
+    Status: 500
+    Connection: keep-alive
+    Content-Type: application/transit+json
+    Content-Length: 33
+
+    {:error "Internal Error"}
+
+To make it work we have to send it inside a vector::
+
+    $ echo '[(ui/increment {:value 1})]' | transito http post http://localhost:8080/query e2t -
+
+    Status: 200
+    Connection: keep-alive
+    Content-Type: application/transit+json
+    Content-Length: 6
+
+    {}
+
+Like in the frontend, we can send a list of places to re read after the transaction::
+
+    $ echo '[(ui/increment {:value 1}) :count]' | transito http post http://localhost:8080/query e2t -
+
+    Status: 200
+    Connection: keep-alive
+    Content-Type: application/transit+json
+    Content-Length: 18
+
+    {:count 2}
+
+Now that we have all the changes in the backend let's review the frontend.
+
+* `First we setup figwheel and cljsbuild <https://github.com/marianoguerra-atik/om-next-e2e/commit/49bbf87e5cea8b91be6a4f3d4a7ec0f8e8f74552#diff-0fff143854a4f5c0469a3819b978a483R5>`_
+* `Add index.html file <https://github.com/marianoguerra-atik/om-next-e2e/commit/49bbf87e5cea8b91be6a4f3d4a7ec0f8e8f74552#diff-f64602509ae576a39f37077e2cf40627R1>`_
+* `Add initial ui.cljs module <https://github.com/marianoguerra-atik/om-next-e2e/commit/49bbf87e5cea8b91be6a4f3d4a7ec0f8e8f74552#diff-26cfe990c6692f961dbe8aa13b7a0a2dR1>`_
+
+In this ui we just display hello world and is only to test that the figwheel
+and cljsbuild setup works.
+
+You can try it running::
+
+        lein figwheel
+
+And opening http://localhost:3449/index.html
+
+Then we `implement a counter component that only works in the frontend <https://github.com/marianoguerra-atik/om-next-e2e/commit/8a8317ab910dfdf0dad2a50fc797580fd25b21fa#diff-26cfe990c6692f961dbe8aa13b7a0a2dR6>`_, if you read the om.next documentation it shouldn't require
+much explanation.
+
+Then we `add cljs-http dependency <https://github.com/marianoguerra-atik/om-next-e2e/commit/0ccf1fc29052243f25d6fd89c58c9f9097176160#diff-0fff143854a4f5c0469a3819b978a483R10>`_ that
+we will use to talk to the server from the frontend and we do some changes
+on the backend to `serve static files from resources/public <https://github.com/marianoguerra-atik/om-next-e2e/commit/0ccf1fc29052243f25d6fd89c58c9f9097176160#diff-07922f5b56cc381777c62c1d0016830eR3>`_.
+
+In the next commit we `rename the increment mutation to ui/increment <https://github.com/marianoguerra-atik/om-next-e2e/commit/ae891d99f7cd855020ff2dcbe3560bdd1ca50656#diff-d527e7a759eae73907536b425c95666eR47>` (ui isn't a good name for this, should have picked a better one).
+
+We also `require some modules and macros to use the cljs-http module <https://github.com/marianoguerra-atik/om-next-e2e/commit/ae891d99f7cd855020ff2dcbe3560bdd1ca50656#diff-26cfe990c6692f961dbe8aa13b7a0a2dR3>`_ and `implement the :send function <https://github.com/marianoguerra-atik/om-next-e2e/commit/ae891d99f7cd855020ff2dcbe3560bdd1ca50656#diff-26cfe990c6692f961dbe8aa13b7a0a2dR42>`_ that is `required by the reconciler <https://github.com/marianoguerra-atik/om-next-e2e/commit/ae891d99f7cd855020ff2dcbe3560bdd1ca50656#diff-26cfe990c6692f961dbe8aa13b7a0a2dR42>`_ if we want to talk to remotes, this is explained in the om.next documentation in the `Remote Synchronization Tutorial <https://github.com/omcljs/om/wiki/Remote-Synchronization-Tutorial>`_
+and the `Om.next FAQ <https://github.com/omcljs/om/wiki/Om-Next-FAQ>`_.
+
+In this commit I did the increment transaction by hand because I couldn't get
+it to work since I was trying to pass ":remote true" to the mutator but not
+the query ast, you will see that in the next commit.
+
+Then when Increment is clicked I make a transaction to increment it both locally
+and send it to the backend, I `make the transaction on click <https://github.com/marianoguerra-atik/om-next-e2e/commit/183449b05aacbf5986754a779e08fc1a03bc0fa6#diff-26cfe990c6692f961dbe8aa13b7a0a2dR60>`_ which is handled at `defmethod mutate 'ui/increment <https://github.com/marianoguerra-atik/om-next-e2e/commit/183449b05aacbf5986754a779e08fc1a03bc0fa6#diff-26cfe990c6692f961dbe8aa13b7a0a2dR34>`_, notice the ":remote true" and ":api ast", :api is an identifier for
+a remote that I `specified when creating the reconciler <https://github.com/marianoguerra-atik/om-next-e2e/blob/183449b05aacbf5986754a779e08fc1a03bc0fa6/src/om_next_e2e/ui.cljs#L41>`_.
+
+Now you can start the server with::
+
+    lein run
+
+And open http://localhost:8080/index.html.
+
+click increment, open it in another browser and click increment in one and
+then in the other one, see how they reflect the actual value after a short
+time where they increment it by one locally.
+
+You can see a short screencast of this demo here: https://youtu.be/rm8OJvdsQGk
+
 License
 -------
 
