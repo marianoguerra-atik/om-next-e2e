@@ -330,7 +330,7 @@ Then we `add cljs-http dependency <https://github.com/marianoguerra-atik/om-next
 we will use to talk to the server from the frontend and we do some changes
 on the backend to `serve static files from resources/public <https://github.com/marianoguerra-atik/om-next-e2e/commit/0ccf1fc29052243f25d6fd89c58c9f9097176160#diff-07922f5b56cc381777c62c1d0016830eR3>`_.
 
-In the next commit we `rename the increment mutation to ui/increment <https://github.com/marianoguerra-atik/om-next-e2e/commit/ae891d99f7cd855020ff2dcbe3560bdd1ca50656#diff-d527e7a759eae73907536b425c95666eR47>` (ui isn't a good name for this, should have picked a better one).
+In the next commit we `rename the increment mutation to ui/increment <https://github.com/marianoguerra-atik/om-next-e2e/commit/ae891d99f7cd855020ff2dcbe3560bdd1ca50656#diff-d527e7a759eae73907536b425c95666eR47>`_ (ui isn't a good name for this, should have picked a better one).
 
 We also `require some modules and macros to use the cljs-http module <https://github.com/marianoguerra-atik/om-next-e2e/commit/ae891d99f7cd855020ff2dcbe3560bdd1ca50656#diff-26cfe990c6692f961dbe8aa13b7a0a2dR3>`_ and `implement the :send function <https://github.com/marianoguerra-atik/om-next-e2e/commit/ae891d99f7cd855020ff2dcbe3560bdd1ca50656#diff-26cfe990c6692f961dbe8aa13b7a0a2dR42>`_ that is `required by the reconciler <https://github.com/marianoguerra-atik/om-next-e2e/commit/ae891d99f7cd855020ff2dcbe3560bdd1ca50656#diff-26cfe990c6692f961dbe8aa13b7a0a2dR42>`_ if we want to talk to remotes, this is explained in the om.next documentation in the `Remote Synchronization Tutorial <https://github.com/omcljs/om/wiki/Remote-Synchronization-Tutorial>`_
 and the `Om.next FAQ <https://github.com/omcljs/om/wiki/Om-Next-FAQ>`_.
@@ -340,7 +340,7 @@ it to work since I was trying to pass ":remote true" to the mutator but not
 the query ast, you will see that in the next commit.
 
 Then when Increment is clicked I make a transaction to increment it both locally
-and send it to the backend, I `make the transaction on click <https://github.com/marianoguerra-atik/om-next-e2e/commit/183449b05aacbf5986754a779e08fc1a03bc0fa6#diff-26cfe990c6692f961dbe8aa13b7a0a2dR60>`_ which is handled at `defmethod mutate ui increment <https://github.com/marianoguerra-atik/om-next-e2e/commit/183449b05aacbf5986754a779e08fc1a03bc0fa6#diff-26cfe990c6692f961dbe8aa13b7a0a2dR34>`_, notice the ":remote true" and ":api ast", :api is an identifier for
+and send it to the backend, I `make the transaction on click <https://github.com/marianoguerra-atik/om-next-e2e/commit/183449b05aacbf5986754a779e08fc1a03bc0fa6#diff-26cfe990c6692f961dbe8aa13b7a0a2dR60>`_ which is handled at `defmethod mutate 'ui/increment <https://github.com/marianoguerra-atik/om-next-e2e/commit/183449b05aacbf5986754a779e08fc1a03bc0fa6#diff-26cfe990c6692f961dbe8aa13b7a0a2dR34>`_, notice the ":remote true" and ":api ast", :api is an identifier for
 a remote that I `specified when creating the reconciler <https://github.com/marianoguerra-atik/om-next-e2e/blob/183449b05aacbf5986754a779e08fc1a03bc0fa6/src/om_next_e2e/ui.cljs#L41>`_.
 
 Now you can start the server with::
