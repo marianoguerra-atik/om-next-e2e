@@ -39,7 +39,7 @@
   (swap! state
          #(update % :count (fn [old] (+ old value))))
   {:status 200
-   :body {:value {:keys [:count]}}})
+   :body {}})
 
 (defmethod mutatef :default [_ key params]
   {:status 404 :body {:error "Not Found" :key key :params params}})
