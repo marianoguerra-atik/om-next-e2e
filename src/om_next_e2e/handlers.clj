@@ -12,15 +12,6 @@
 
 (def parser (om/parser {:read readf :mutate mutatef}))
 
-(defn action [{:keys [body]}]
-  (let [mut-env {:state app-state}
-        key (first body)
-        params (second body)
-        _ (log/info "mutate!" key params)
-        r (mutatef mut-env key params)]
-    (log/info "<<" r)
-    r))
-
 (defn query [{:keys [body]}]
   (let [query-env {:state app-state}
         params body

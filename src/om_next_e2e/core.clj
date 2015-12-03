@@ -36,12 +36,10 @@
   (fn [{:keys [body]}]
     (response-to-transit (call-handler handler has-body body))))
 
-(def req-handlers {:action      (wrap-handler handlers/action true)
-                   :query       (wrap-handler handlers/query true)
+(def req-handlers {:query       (wrap-handler handlers/query true)
                    :not-found   (wrap-handler handlers/not-found false)})
 
-(def routes ["/" {"action" {:post :action}
-                  "query" {:post :query}
+(def routes ["/" {"query" {:post :query}
                   true :not-found}])
 
 (def app (wrap-resource (make-handler routes req-handlers) "public"))
