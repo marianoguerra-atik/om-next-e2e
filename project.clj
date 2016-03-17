@@ -4,18 +4,18 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :main om-next-e2e.core
-  :dependencies [[org.clojure/clojure "1.7.0"]
-                 [org.clojure/clojurescript "1.7.145"]
-                 [org.omcljs/om "1.0.0-alpha25-SNAPSHOT"]
-                 [cljs-http "0.1.38"]
+  :dependencies [[org.clojure/clojure "1.8.0"]
+                 [org.clojure/clojurescript "1.7.228"]
+                 [org.omcljs/om "1.0.0-alpha30"]
+                 [cljs-http "0.1.39"]
 
-                 [bidi "1.21.1"]
+                 [bidi "2.0.4"]
                  [com.cognitect/transit-clj "0.8.285"]
                  [org.clojure/tools.logging "0.3.1"]
-                 [org.immutant/web "2.1.1"]]
+                 [org.immutant/web "2.1.3"]]
 
-  :plugins [[lein-cljsbuild "1.1.1"]
-            [lein-figwheel "0.4.1"]]
+  :plugins [[lein-cljsbuild "1.1.3"]
+            [lein-figwheel "0.5.0-6"]]
 
   :clean-targets ^{:protect false} ["resources/public/js/compiled"
                                     "target"]
